@@ -1,7 +1,7 @@
 import time
 import smbus2
 from flask import Flask, request
-import RPi.GPIO as GPIO
+import subprocess
 
 # Define I2C address of the LCD
 LCD_ADDRESS = 0x27  # Change this to your actual I2C address
@@ -66,9 +66,10 @@ def lcd_init():
     lcd_clear()
 
 def toggle_gpio(state):
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(GPIO_PIN, GPIO.OUT)
-    GPIO.output(GPIO_PIN, state)
+    if state:
+        subprocess.run(['gpio', '-g', 'write', str(GPIO_PIN), '1'])
+    else:
+        subprocess.run(['gpio', '-g', 'write', str(GPIO_PIN), '0'])
 
 app = Flask(__name__)
 
@@ -83,5 +84,10 @@ def gpio_off():
     return 'GPIO OFF'
 
 if __name__ == '__main__':
+    # Setup GPIO pin
+    subprocess.run(['gpio', 'export', str(GPIO_PIN), 'out'])
+
+    # Initialize display
     lcd_init()
+
     app.run(host='0.0.0.0', port=5000)
