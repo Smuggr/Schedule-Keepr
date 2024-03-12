@@ -5,6 +5,7 @@ from datetime import datetime
 import subprocess
 import threading
 from flask_cors import CORS
+import threading
 
 # Define I2C address of the LCD
 LCD_ADDRESS = 0x27  # Change this to your actual I2C address
@@ -75,17 +76,35 @@ def toggle_gpio(state):
         subprocess.run(['gpio', 'write', str(GPIO_PIN), '0'])
 
 def update_lcd():
+    toggle = True
     while True:
-        current_time = datetime.now().strftime("%H:%M:%S %Y-%m-%d")
+        if toggle:
+            current_time = datetime.now().strftime("%H:%M:%S")
+        else:
+            current_time = datetime.now().strftime("%d:%m:%Y")
         lcd_string(current_time, 0x80)
 
+        toggle = not toggle
+        time.sleep(2)  # Display for 2 seconds
+
+def update_gpio():
+    while True:
         gpio_status = subprocess.run(['gpio', 'read', str(GPIO_PIN)], capture_output=True, text=True).stdout.strip()
         if gpio_status == '1':
             lcd_string("Relay: HIGH", 0xC0)
         else:
             lcd_string("Relay: LOW", 0xC0)
-            
         time.sleep(0.1)
+
+# Start LCD update thread
+lcd_thread = threading.Thread(target=update_lcd)
+lcd_thread.daemon = True
+lcd_thread.start()
+
+# Start GPIO update thread
+gpio_thread = threading.Thread(target=update_gpio)
+gpio_thread.daemon = True
+gpio_thread.start()
 
 app = Flask(__name__)
 CORS(app)  # Allow CORS for all routes
