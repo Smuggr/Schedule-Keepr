@@ -75,42 +75,18 @@ def toggle_gpio(state):
         subprocess.run(['gpio', 'write', str(GPIO_PIN), '0'])
 
 def update_lcd():
-    show_time = True
     while True:
-        if show_time:
-            current_time = datetime.now().strftime("%H:%M:%S")
-            lcd_string(current_time, 0x80)
-        else:
-            current_date = datetime.now().strftime("%Y-%m-%d")
-            lcd_string(current_date, 0x80)
+        current_time = datetime.now().strftime("%H:%M:%S")
+        current_date = datetime.now().strftime("%d/%m/%Y")
+        lcd_string(current_time, 0x80)
 
         gpio_status = subprocess.run(['gpio', 'read', str(GPIO_PIN)], capture_output=True, text=True).stdout.strip()
         if gpio_status == '1':
-            lcd_string("Relay: HIGH", 0xC0)
+            lcd_string("HIGH " + current_date, 0xC0)
         else:
-            lcd_string("Relay: LOW", 0xC0)
-
-        show_time = not show_time
-        time.sleep(5)
-
-def update_gpio():
-    while True:
-        gpio_status = subprocess.run(['gpio', 'read', str(GPIO_PIN)], capture_output=True, text=True).stdout.strip()
-        if gpio_status == '1':
-            lcd_string("Relay: HIGH", 0xC0)
-        else:
-            lcd_string("Relay: LOW", 0xC0)
+            lcd_string("LOW  " + current_date, 0xC0)
+            
         time.sleep(0.1)
-
-# Start LCD update thread
-lcd_thread = threading.Thread(target=update_lcd)
-lcd_thread.daemon = True
-lcd_thread.start()
-
-# Start GPIO update thread
-gpio_thread = threading.Thread(target=update_gpio)
-gpio_thread.daemon = True
-gpio_thread.start()
 
 app = Flask(__name__)
 CORS(app)  # Allow CORS for all routes
