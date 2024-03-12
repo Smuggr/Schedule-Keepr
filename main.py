@@ -67,8 +67,8 @@ lcd_init()
 lcd_string("4:45 -> 7:00", 0)  # First line
 lcd_string("192.168.1.30", 0x40)  # Second line
 
-# Wait for a few seconds
-time.sleep(5)
+# # Wait for a few seconds
+# time.sleep(5)
 
-# Clear the LCD
-lcd_clear()
+# # Clear the LCD
+# lcd_clear()
