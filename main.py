@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import time
 import smbus2
 
@@ -42,9 +40,10 @@ def lcd_toggle_enable(bits):
     bus.write_byte(LCD_ADDRESS, (bits & ~ENABLE))
     time.sleep(E_DELAY)
 
-def lcd_string(message):
+def lcd_string(message, line):
     # Send string to display
     message = message.ljust(16, " ")
+    lcd_byte(0x80 | line, LCD_CMD)  # Move cursor to specified line
     for i in range(16):
         lcd_byte(ord(message[i]), LCD_CHR)
 
@@ -64,9 +63,12 @@ def lcd_init():
 # Initialize display
 lcd_init()
 
-# Print a message to the LCD.
-lcd_string("Hello, world!")
-time.sleep(5)  # Wait 5 seconds
+# Print messages on different lines
+lcd_string("Broker IP: 192.168.1.42", 0)  # First line
+lcd_string("Device IP: 192.168.1.30", 0x40)  # Second line
+
+# Wait for a few seconds
+time.sleep(5)
 
 # Clear the LCD
 lcd_clear()
