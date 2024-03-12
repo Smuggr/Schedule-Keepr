@@ -64,8 +64,8 @@ def lcd_init():
 lcd_init()
 
 # Print messages on different lines
-lcd_string("Broker IP: 192.168.1.42", 0)  # First line
-lcd_string("Device IP: 192.168.1.30", 0x40)  # Second line
+lcd_string("4:45 -> 7:00", 0)  # First line
+lcd_string("192.168.1.30", 0x40)  # Second line
 
 # Wait for a few seconds
 time.sleep(5)
