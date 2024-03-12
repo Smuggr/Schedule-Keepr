@@ -76,8 +76,8 @@ def toggle_gpio(state):
 
 def update_lcd():
     while True:
-        current_time = datetime.now().strftime("%H:%M:%S")
-        lcd_string("Time:" + current_time, 0x80)
+        current_time = datetime.now().strftime("%H:%M:%S %Y-%m-%d")
+        lcd_string(current_time, 0x80)
 
         gpio_status = subprocess.run(['gpio', 'read', str(GPIO_PIN)], capture_output=True, text=True).stdout.strip()
         if gpio_status == '1':
