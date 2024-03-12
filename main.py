@@ -78,7 +78,7 @@ def update_lcd():
     while True:
         current_time = datetime.now().strftime("%H:%M:%S")
         current_date = datetime.now().strftime("%d/%m/%Y")
-        lcd_string("  " + current_time, 0x80)
+        lcd_string(current_time, 0x80)
 
         gpio_status = subprocess.run(['gpio', 'read', str(GPIO_PIN)], capture_output=True, text=True).stdout.strip()
         if gpio_status == '1':
