@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 import subprocess
 import threading
+from flask_cors import CORS
 
 # Define I2C address of the LCD
 LCD_ADDRESS = 0x27  # Change this to your actual I2C address
@@ -81,6 +82,7 @@ def update_lcd():
         time.sleep(1)  # Update time every second
 
 app = Flask(__name__)
+CORS(app)  # Allow CORS for all routes
 
 @app.route('/on', methods=['POST'])
 def gpio_on():
