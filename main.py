@@ -1,6 +1,6 @@
 import time
 import smbus2
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from datetime import datetime
 import subprocess
 import threading
@@ -91,6 +91,17 @@ def gpio_on():
 def gpio_off():
     toggle_gpio(False)
     return 'GPIO OFF'
+
+@app.route('/time', methods=['GET'])
+def get_time():
+    current_time = datetime.now().strftime("%H:%M:%S")
+    return jsonify({'current_time': current_time})
+
+@app.route('/gpio_status', methods=['GET'])
+def get_gpio_status():
+    # Read GPIO status here and return
+    # For now, let's just return a dummy value
+    return jsonify({'gpio_status': 'HIGH'})
 
 if __name__ == '__main__':
     # Setup GPIO pin
