@@ -108,9 +108,8 @@ def get_time():
 
 @app.route('/gpio_status', methods=['GET'])
 def get_gpio_status():
-    # Read GPIO status here and return
-    # For now, let's just return a dummy value
-    return jsonify({'gpio_status': 'HIGH'})
+    gpio_status = subprocess.run(['gpio', 'read', str(GPIO_PIN)], capture_output=True, text=True).stdout.strip()
+    return jsonify({'gpio_status': gpio_status})
 
 if __name__ == '__main__':
     # Setup GPIO pin
