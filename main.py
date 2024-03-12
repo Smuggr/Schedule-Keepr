@@ -76,8 +76,8 @@ def toggle_gpio(state):
 def update_lcd():
     while True:
         current_time = datetime.now().strftime("%H:%M:%S")
-        lcd_string("Current Time:", 0)
-        lcd_string(current_time, 1)
+        lcd_string("Current Time:", 0x80)
+        lcd_string(current_time, 0xC0)
         time.sleep(1)  # Update time every second
 
 app = Flask(__name__)
