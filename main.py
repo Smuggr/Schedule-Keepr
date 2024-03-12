@@ -67,9 +67,9 @@ def lcd_init():
 
 def toggle_gpio(state):
     if state:
-        subprocess.run(['gpio', '-g', 'write', str(GPIO_PIN), '1'])
+        subprocess.run(['gpio', 'write', str(GPIO_PIN), '1'])
     else:
-        subprocess.run(['gpio', '-g', 'write', str(GPIO_PIN), '0'])
+        subprocess.run(['gpio', 'write', str(GPIO_PIN), '0'])
 
 app = Flask(__name__)
 
