@@ -78,11 +78,13 @@ def update_lcd():
     while True:
         current_time = datetime.now().strftime("%H:%M:%S")
         lcd_string("Time:" + current_time, 0x80)
-        lcd_string(current_time, 0xC0)
-        
-        # Read GPIO status
+
         gpio_status = subprocess.run(['gpio', 'read', str(GPIO_PIN)], capture_output=True, text=True).stdout.strip()
-        lcd_string("Relay:" + gpio_status, 0xC0)
+        if gpio_status == '1':
+            lcd_string("Relay: HIGH", 0xC0)
+        else:
+            lcd_string("Relay: LOW", 0xC0)
+            
         time.sleep(0.1)
 
 app = Flask(__name__)
