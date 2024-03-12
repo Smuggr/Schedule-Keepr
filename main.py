@@ -19,7 +19,7 @@ E_PULSE = 0.0005
 E_DELAY = 0.0005
 
 # Open I2C bus
-bus = smbus2.SMBus(1)  # 1 indicates /dev/i2c-1
+bus = smbus2.SMBus(0)  # 1 indicates /dev/i2c-1
 
 def lcd_byte(bits, mode):
     # Send byte to data pins
