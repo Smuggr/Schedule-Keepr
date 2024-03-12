@@ -83,7 +83,7 @@ def update_lcd():
         # Read GPIO status
         gpio_status = subprocess.run(['gpio', 'read', str(GPIO_PIN)], capture_output=True, text=True).stdout.strip()
         lcd_string("Relay:" + gpio_status, 0xC0)
-        time.sleep(1)
+        time.sleep(0.1)
 
 app = Flask(__name__)
 CORS(app)  # Allow CORS for all routes
