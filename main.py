@@ -1,5 +1,7 @@
 import time
 import smbus2
+from flask import Flask, request
+import RPi.GPIO as GPIO
 
 # Define I2C address of the LCD
 LCD_ADDRESS = 0x27  # Change this to your actual I2C address
@@ -11,6 +13,9 @@ LCD_CMD = 0  # Mode - Sending command
 LCD_BACKLIGHT = 0x08  # On
 
 ENABLE = 0b00000100  # Enable bit
+
+# GPIO pin for controlling
+GPIO_PIN = 1  # Change this to the desired GPIO pin number
 
 # Timing constants
 E_PULSE = 0.0005
@@ -60,15 +65,23 @@ def lcd_init():
     lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
     lcd_clear()
 
-# Initialize display
-lcd_init()
+def toggle_gpio(state):
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(GPIO_PIN, GPIO.OUT)
+    GPIO.output(GPIO_PIN, state)
 
-# Print messages on different lines
-lcd_string("4:45 -> 7:00", 0)  # First line
-lcd_string("192.168.1.30", 0x40)  # Second line
+app = Flask(__name__)
 
-# # Wait for a few seconds
-# time.sleep(5)
+@app.route('/on', methods=['POST'])
+def gpio_on():
+    toggle_gpio(True)
+    return 'GPIO ON'
 
-# # Clear the LCD
-# lcd_clear()
+@app.route('/off', methods=['POST'])
+def gpio_off():
+    toggle_gpio(False)
+    return 'GPIO OFF'
+
+if __name__ == '__main__':
+    lcd_init()
+    app.run(host='0.0.0.0', port=5000)
