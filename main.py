@@ -81,7 +81,7 @@ def update_lcd():
             # Create a new thread to toggle GPIO asynchronously
             threading.Thread(target=toggle_gpio_for_duration, args=(5,)).start()
         
-        time.sleep(0.1)
+        time.sleep(E_DELAY)
 
 app = Flask(__name__)
 CORS(app)
