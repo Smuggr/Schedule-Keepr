@@ -16,8 +16,8 @@ E_PULSE = 0.0005
 E_DELAY = 0.0005
 
 toggle_timestamps = [
-    "12:31:00",
-    "15:30:00",
+    "12:55:00",
+    "13:15:00",
 ]
 
 bus = smbus2.SMBus(0)
