@@ -53,6 +53,8 @@ def lcd_init():
     lcd_byte(0x0C, LCD_CMD)
     lcd_byte(0x28, LCD_CMD)
     lcd_clear()
+    
+    lcd_byte(LCD_BACKLIGHT, LCD_CMD)
 
 def toggle_gpio_for_duration(duration):
     toggle_gpio(True)
