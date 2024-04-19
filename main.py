@@ -54,8 +54,6 @@ def lcd_string(message, line):
 
 def lcd_clear():
     lcd_byte(0x08, LCD_CMD)
-    lcd_byte(0x80, LCD_CMD)
-    lcd_byte(ENABLE, LCD_CMD)
     
     for _ in range(16):
         lcd_byte(ord(" "), LCD_CHR)
@@ -118,6 +116,7 @@ def get_gpio_status():
 
 if __name__ == '__main__':
     subprocess.run(['gpio', 'export', str(GPIO_PIN), 'out'])
+    lcd_byte(0x80, LCD_CMD)
     lcd_init()
     time.sleep(1)
     lcd_clear()
