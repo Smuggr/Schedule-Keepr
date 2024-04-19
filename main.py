@@ -71,6 +71,8 @@ def toggle_gpio(state):
 
 def update_lcd():
     while True:
+        lcd_clear()
+        
         current_time = datetime.now().strftime("%H:%M:%S")
         current_date = datetime.now().strftime("%d/%m/%Y")
         
