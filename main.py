@@ -46,9 +46,6 @@ def lcd_string(message, line):
 def lcd_clear():
     lcd_byte(0x01, LCD_CMD)
     
-    # for _ in range(16):
-    #     lcd_byte(ord(" "), LCD_CHR)
-
 def lcd_init():
     lcd_byte(0x33, LCD_CMD)
     lcd_byte(0x32, LCD_CMD)
@@ -56,6 +53,11 @@ def lcd_init():
     lcd_byte(0x0C, LCD_CMD)
     lcd_byte(0x28, LCD_CMD)
     lcd_clear()
+
+def toggle_gpio_for_duration(duration):
+    toggle_gpio(True)
+    time.sleep(duration)
+    toggle_gpio(False)
 
 def toggle_gpio(state):
     if state:
@@ -76,9 +78,8 @@ def update_lcd():
             lcd_string("LOW  " + current_date, 0xC0)
 
         if current_time in toggle_timestamps:
-            toggle_gpio(True)
-            time.sleep(5)
-            toggle_gpio(False)
+            # Create a new thread to toggle GPIO asynchronously
+            threading.Thread(target=toggle_gpio_for_duration, args=(5,)).start()
         
         time.sleep(0.1)
 
@@ -107,11 +108,8 @@ def get_gpio_status():
 
 if __name__ == '__main__':
     subprocess.run(['gpio', 'export', str(GPIO_PIN), 'out'])
-    #lcd_byte(0x80, LCD_CMD)
     time.sleep(1)
-    
     lcd_init()
-    
     time.sleep(1)
     lcd_clear()
     lcd_thread = threading.Thread(target=update_lcd)
