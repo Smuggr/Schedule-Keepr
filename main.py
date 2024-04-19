@@ -113,8 +113,8 @@ def get_gpio_status():
 
 if __name__ == '__main__':
     subprocess.run(['gpio', 'export', str(GPIO_PIN), 'out'])
-    lcd_clear()
     lcd_init()
+    time.sleep(1)
     lcd_clear()
     lcd_thread = threading.Thread(target=update_lcd)
     lcd_thread.daemon = True
