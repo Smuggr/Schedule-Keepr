@@ -53,8 +53,9 @@ def lcd_string(message, line):
         lcd_byte(ord(message[i]), LCD_CHR)
 
 def lcd_clear():
+    lcd_byte(0x08, LCD_CMD)
     lcd_byte(0x80, LCD_CMD)
-
+    
     for _ in range(16):
         lcd_byte(ord(" "), LCD_CHR)
 
