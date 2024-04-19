@@ -53,7 +53,10 @@ def lcd_string(message, line):
         lcd_byte(ord(message[i]), LCD_CHR)
 
 def lcd_clear():
-    lcd_byte(0x01, LCD_CMD)
+    lcd_byte(0x80, LCD_CMD)
+
+    for _ in range(16):
+        lcd_byte(ord(" "), LCD_CHR)
 
 def lcd_init():
     lcd_byte(0x33, LCD_CMD)
@@ -71,8 +74,6 @@ def toggle_gpio(state):
 
 def update_lcd():
     while True:
-        lcd_clear()
-        
         current_time = datetime.now().strftime("%H:%M:%S")
         current_date = datetime.now().strftime("%d/%m/%Y")
         
