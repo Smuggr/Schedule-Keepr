@@ -116,8 +116,9 @@ def get_gpio_status():
 
 if __name__ == '__main__':
     subprocess.run(['gpio', 'export', str(GPIO_PIN), 'out'])
-    lcd_byte(0x80, LCD_CMD)
+    #lcd_byte(0x80, LCD_CMD)
     time.sleep(1)
+    
     lcd_init()
     
     time.sleep(1)
