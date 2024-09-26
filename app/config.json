@@ -1,0 +1,9 @@
+{
+	"scraper": {
+		"optivum_base_url": "https://zsem.edu.pl/plany/plany/o%d.html"
+	},
+	"devices": {
+		"display_address": 39,
+		"rtc_address": 104
+	}
+}
